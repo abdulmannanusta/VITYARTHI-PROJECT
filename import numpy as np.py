@@ -11,7 +11,7 @@ import random
 import time
 from datetime import datetime
 import numpy as np
-import sympy as sp  # i thought symbolic math would look cool lol
+import sympy as sp  
 
 # yeah global variables are bad but whatever this is a small script
 events = []
@@ -44,7 +44,7 @@ def add_new_event():
             print("  nah that's not a valid date, try again")
 
     price = float(input("  Price per ticket (0 if free): "))
-    capacity = int(input("  Max people allowed: "))
+    capacity = int(input("  Max people allowed:  "))
 
     event = {
         "id": len(events) + 1,
@@ -182,7 +182,7 @@ def show_money_and_stats():
         symbolic_rev = event["price"] * n
         real_rev = symbolic_rev.subs(n, people)
 
-        print(f"  {event['title'][:35]:35} | {people:3} × \( {event['price']:6.2f} = \){float(real_rev):8.2f}")
+        print(f"  {event['title'][:35]:35} | {people:3} @ {event['price']:6.2f} = ${float(real_rev):8.2f}")
         total_money += float(real_rev)
 
     print(f"\n  {'TOTAL MONEY MADE':>45} → ${total_money:8.2f}\n")
@@ -197,7 +197,10 @@ def show_money_and_stats():
     print("  Seat map thingy (■ = taken, ⋅ = empty)\n")
     for i, event in enumerate(events):
         taken = attendance[i]
-        print(f"  {event['title'][:25]:25} | {'■'taken}{'⋅'(max_cap-taken)}  ({taken}/{event['capacity']})")
+        # Fixed the syntax error here - added * operator for string repetition
+        taken_seats = '■' * taken
+        empty_seats = '⋅' * (max_cap - taken)
+        print(f" {event['title'][:25]:25} | {taken_seats}{empty_seats} ({taken}/{event['capacity']})")
     print()
 
    
@@ -263,8 +266,7 @@ def main():
             time.sleep(1.3)
 
 
-
-if _name_ == "_main_":
+if __name__ == "__main__":
     # easter egg
     if random.random() < 0.05:
         print("Secret message: you're awesome")
